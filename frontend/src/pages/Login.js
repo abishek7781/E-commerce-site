@@ -10,10 +10,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (!email || !password) {
-      setError('Please enter email and password');
+
+    // Check for admin credentials (hardcoded for demo)
+    if (email === 'admin@example.com' && password === 'admin123') {
+      localStorage.setItem('adminLoggedIn', 'true');
+      localStorage.removeItem('user');
+      navigate('/admin');
       return;
     }
+
+    // Normal user login
     try {
       const response = await fetch('http://localhost:5001/api/login', {
         method: 'POST',
@@ -23,30 +29,22 @@ const Login = () => {
       const data = await response.json();
       if (!response.ok) {
         setError(data.error || 'Login failed');
-      } else {
-        localStorage.setItem('user', JSON.stringify({ email, name: data.name }));
-        navigate('/home');
+        return;
       }
+      localStorage.setItem('user', JSON.stringify({ email }));
+      localStorage.removeItem('adminLoggedIn');
+      navigate('/home');
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError('Login failed: ' + err.message);
     }
   };
 
   return (
-    <div style={{
-      maxWidth: '400px',
-      margin: '3rem auto',
-      padding: '2rem',
-      backgroundColor: '#f9f9f9',
-      borderRadius: '12px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      color: '#222',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-    }}>
-      <h2 style={{ color: '#007acc', marginBottom: '1.5rem', textAlign: 'center' }}>Login to NammaCart</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {error && <p style={{ color: '#d32f2f', textAlign: 'center' }}>{error}</p>}
-        <label htmlFor="email" style={{ fontWeight: '600' }}>Email:</label>
+    <div className="login-container">
+      <h2 className="login-title">Login to NammaCart</h2>
+      <form onSubmit={handleSubmit} className="login-form">
+        {error && <p className="login-error">{error}</p>}
+        <label htmlFor="email" className="login-label">Email:</label>
         <input
           type="email"
           id="email"
@@ -54,16 +52,9 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
           required
-          style={{
-            padding: '0.8rem',
-            borderRadius: '8px',
-            border: '1px solid #007acc',
-            background: '#fff',
-            color: '#222',
-            fontSize: '1rem'
-          }}
+          className="login-input"
         />
-        <label htmlFor="password" style={{ fontWeight: '600' }}>Password:</label>
+        <label htmlFor="password" className="login-label">Password:</label>
         <input
           type="password"
           id="password"
@@ -71,36 +62,18 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
           required
-          style={{
-            padding: '0.8rem',
-            borderRadius: '8px',
-            border: '1px solid #007acc',
-            background: '#fff',
-            color: '#222',
-            fontSize: '1rem'
-          }}
+          className="login-input"
         />
-        <button type="submit" style={{
-          marginTop: '1rem',
-          backgroundColor: '#007acc',
-          color: '#fff',
-          border: 'none',
-          padding: '0.75rem',
-          borderRadius: '8px',
-          fontWeight: '700',
-          fontSize: '1rem',
-          cursor: 'pointer',
-          transition: 'background-color 0.3s ease'
-        }}
-          onMouseEnter={e => e.currentTarget.style.backgroundColor = '#005fa3'}
-          onMouseLeave={e => e.currentTarget.style.backgroundColor = '#007acc'}
+        <button
+          type="submit"
+          className="login-button"
         >
           Login
         </button>
+        <p className="login-link">
+          New user? <Link to="/register">Register now</Link>
+        </p>
       </form>
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        New user? <Link to="/register" style={{ color: '#007acc', fontWeight: '600' }}>Register now</Link>
-      </p>
     </div>
   );
 };

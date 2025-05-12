@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import siteNameImg from '../site_name.png';
 
 const Navbar = ({ onSearch }) => {
   const location = useLocation();
@@ -61,98 +62,57 @@ const Navbar = ({ onSearch }) => {
   };
 
   return (
-    <nav className="navbar" style={{ position: 'relative' }}>
+    <nav className="navbar">
       <div className="navbar-left">
-        <Link to="/" className="site-name">NammaCart</Link>
+        <Link to="/home" className="site-name">
+          <img src={siteNameImg} alt="Site Name" style={{ height: '60px', width: 'auto', objectFit: 'contain' , marginRight: '30px' }} />
+        </Link>
       </div>
-      <button
-        className="hamburger"
-        onClick={toggleMenu}
-        aria-label="Toggle menu"
-        style={{
-          display: 'none',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          fontSize: '1.5rem',
-          color: '#007acc',
-          position: 'absolute',
-          top: '10px',
-          right: '50px',
-          zIndex: 1001,
-        }}
-      >
-        &#9776;
-      </button>
-      <button
-        onClick={handleVoiceSearch}
-        aria-label="Voice Search"
-        style={{
-          background: listening ? '#007acc' : 'none',
-          border: '2px solid #007acc',
-          borderRadius: '50%',
-          width: '32px',
-          height: '32px',
-          cursor: 'pointer',
-          color: listening ? '#fff' : '#007acc',
-          fontSize: '18px',
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          zIndex: 1002,
-        }}
-        title={listening ? 'Listening...' : 'Voice Search'}
-      >
-        🎤
-      </button>
       <div
-        className="navbar-right"
-        style={{
-          display: 'flex',
-          gap: '1rem',
-          alignItems: 'center',
-        }}
+        className={`navbar-right ${menuOpen ? 'open' : ''}`}
       >
+        <button
+          className="hamburger"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          &#9776;
+        </button>
+        {menuOpen && (
+          <button
+            onClick={() => setMenuOpen(false)}
+            aria-label="Close menu"
+            className="close-menu-button"
+          >
+            &times;
+          </button>
+        )}
         <Link to="/home">Home</Link>
         <Link to="/cart">Cart</Link>
         <Link to="/orders">Orders</Link>
         <Link to="/about">About</Link>
-        {user ? (
-          <>
-            <button onClick={handleLogout} className="logout-button">Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        )}
+        <button
+          onClick={handleVoiceSearch}
+          aria-label="Voice Search"
+          className={`voice-search-button ${listening ? 'listening' : ''}`}
+          title={listening ? 'Listening...' : 'Voice Search'}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M8 12a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v4a3 3 0 0 0 3 3z"/>
+            <path d="M5 8a3 3 0 0 0 6 0H5z"/>
+            <path d="M8 14a5 5 0 0 0 5-5h-1a4 4 0 0 1-8 0H3a5 5 0 0 0 5 5z"/>
+            <path d="M7.5 15h1v1h-1v-1z"/>
+          </svg>
+        </button>
+        <button
+          onClick={handleLogout}
+          style={{ marginLeft: 'auto', padding: '6px 12px', cursor: 'pointer' }}
+          aria-label="Logout"
+          className="logout-button"
+        >
+          Logout
+        </button>
       </div>
-      <style>{`
-        @media (max-width: 768px) {
-          .hamburger {
-            display: block !important;
-          }
-          .navbar-right {
-            display: ${menuOpen ? 'flex' : 'none'};
-            flex-direction: column;
-            position: absolute;
-            top: 50px;
-            right: 10px;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 1000;
-          }
-          .navbar-right a, .navbar-right button {
-            padding: 0.5rem 0;
-            width: 100%;
-            text-align: right;
-          }
-        }
-      `}</style>
     </nav>
   );
 };

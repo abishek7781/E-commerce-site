@@ -74,184 +74,197 @@ const Cart = () => {
     setOrderTotal(0);
   };
 
-  return (
-    <div className="page cart-page" style={{ maxWidth: '900px', margin: '2rem auto', padding: '4rem 1rem 1rem 1rem', position: 'relative' }}>
-      <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '1.5rem', color: '#2874f0' }}>Your Cart</h1>
-      {cartItems.length === 0 && !orderPlaced ? (
-        <div style={{ fontSize: '1.2rem', color: '#555' }}>
-          <p>Your cart is empty.</p>
-          <Link to="/" style={{ color: '#2874f0', textDecoration: 'underline' }}>Go to Home Page</Link>
-        </div>
-      ) : (
-        <>
-          <div className="cart-items" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {cartItems.map(item => (
-              <div
-                key={item.id}
-                className="cart-item card"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                  backgroundColor: '#fff',
-                }}
-              >
-                <img
-                  src={item.image || 'https://via.placeholder.com/120x90.png?text=Product+Image'}
-                  alt={item.name}
-                  className="cart-item-image"
-                  style={{ width: '120px', height: '90px', objectFit: 'contain', borderRadius: '8px', marginRight: '1rem' }}
-                />
-                <div className="cart-item-details" style={{ flex: '1' }}>
-                  <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', fontWeight: '600' }}>{item.name}</h3>
-                  <p style={{ margin: '0.2rem 0', fontSize: '1rem' }}>Quantity: {item.quantity}</p>
-                  <p style={{ margin: '0.2rem 0', fontSize: '1rem', fontWeight: '700', color: '#fb641b' }}>
-                    Price: {formatPrice(item.price * item.quantity)}
-                  </p>
-                </div>
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="remove-button"
-                  style={{
-                    backgroundColor: '#ff3d00',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontWeight: '700',
-                    transition: 'background-color 0.3s ease',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#d32f2f')}
-                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3d00')}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-          {!orderPlaced && (
-            <>
-              <h3 style={{ marginTop: '2rem', fontSize: '1.5rem', fontWeight: '700', color: '#2874f0' }}>
-                Total: {formatPrice(totalPrice)}
-              </h3>
-              <label htmlFor="city" style={{ display: 'block', marginTop: '1.5rem', fontWeight: '600', fontSize: '1rem' }}>
-                City:
-              </label>
-              <input
-                type="text"
-                id="city"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="Enter your city"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  marginTop: '0.5rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ccc',
-                  fontSize: '1rem',
-                }}
-              />
-              <label htmlFor="pincode" style={{ display: 'block', marginTop: '1rem', fontWeight: '600', fontSize: '1rem' }}>
-                Pincode:
-              </label>
-              <input
-                type="text"
-                id="pincode"
-                value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
-                placeholder="Enter your pincode"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  marginTop: '0.5rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ccc',
-                  fontSize: '1rem',
-                }}
-              />
-              <button
-                onClick={handleOrder}
-                className="checkout-button"
-                style={{
-                  marginTop: '1rem',
-                  backgroundColor: '#2874f0',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '0.75rem 1.5rem',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontWeight: '700',
-                  fontSize: '1rem',
-                  transition: 'background-color 0.3s ease',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#1a5bb8')}
-                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#2874f0')}
-              >
-                Checkout
-              </button>
-            </>
-          )}
-        </>
-      )}
+  if (cartItems.length === 0 && !orderPlaced) {
+    return (
+      <div style={{
+        maxWidth: '600px',
+        margin: '4rem auto',
+        padding: '2rem',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '12px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        color: '#222',
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        textAlign: 'center'
+      }}>
+        <h1 style={{ color: '#007acc', marginBottom: '1.5rem' }}>Your Cart</h1>
+        <p>Your cart is empty.</p>
+        <Link to="/" style={{ color: '#007acc', fontWeight: '600' }}>Go to Home Page</Link>
+      </div>
+    );
+  }
 
-      {showPopup && (
-        <div
-          className="order-popup"
-          style={{
+  return (
+    <div style={{
+      maxWidth: '900px',
+      margin: '4rem auto 3rem',
+      padding: '2rem',
+      backgroundColor: '#f9f9f9',
+      borderRadius: '12px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+      color: '#222',
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      display: 'flex',
+      gap: '2rem'
+    }}>
+      <div style={{ flex: 2, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <h2 style={{ color: '#007acc', marginBottom: '1rem' }}>Cart Items</h2>
+        {cartItems.map(item => (
+          <div key={item.id} style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            padding: '1rem',
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+          }}>
+            <img
+              src={item.image || 'https://via.placeholder.com/120x90.png?text=Product+Image'}
+              alt={item.name}
+              style={{ width: '120px', height: '90px', objectFit: 'cover', borderRadius: '8px' }}
+            />
+            <div style={{ flex: 1 }}>
+              <h3 style={{ margin: '0 0 0.5rem 0' }}>{item.name}</h3>
+              <p style={{ margin: '0.25rem 0' }}>Quantity: {item.quantity}</p>
+              <p style={{ margin: '0.25rem 0', fontWeight: '600' }}>
+                Price: {formatPrice(item.price * item.quantity)}
+              </p>
+            </div>
+            <button
+              onClick={() => removeFromCart(item.id)}
+              style={{
+                backgroundColor: '#d32f2f',
+                color: '#fff',
+                border: 'none',
+                padding: '0.5rem 1rem',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                transition: 'background-color 0.3s ease'
+              }}
+              onMouseEnter={e => e.currentTarget.style.backgroundColor = '#b71c1c'}
+              onMouseLeave={e => e.currentTarget.style.backgroundColor = '#d32f2f'}
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
+      <div style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        borderRadius: '12px',
+        padding: '1.5rem',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        height: 'fit-content',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem'
+      }}>
+        <h2 style={{ color: '#007acc', marginBottom: '1rem' }}>Order Summary</h2>
+        <p style={{ fontWeight: '600', fontSize: '1.2rem' }}>Total: {formatPrice(totalPrice)}</p>
+        {!orderPlaced && (
+          <>
+            <label htmlFor="city" style={{ fontWeight: '600' }}>
+              City:
+            </label>
+            <input
+              type="text"
+              id="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Enter your city"
+              style={{
+                width: '100%',
+                padding: '0.8rem',
+                borderRadius: '8px',
+                border: '1px solid #007acc',
+                fontSize: '1rem'
+              }}
+            />
+            <label htmlFor="pincode" style={{ fontWeight: '600' }}>
+              Pincode:
+            </label>
+            <input
+              type="text"
+              id="pincode"
+              value={pincode}
+              onChange={(e) => setPincode(e.target.value)}
+              placeholder="Enter your pincode"
+              style={{
+                width: '100%',
+                padding: '0.8rem',
+                borderRadius: '8px',
+                border: '1px solid #007acc',
+                fontSize: '1rem'
+              }}
+            />
+            <button
+              onClick={handleOrder}
+              style={{
+                width: '100%',
+                backgroundColor: '#007acc',
+                color: '#fff',
+                border: 'none',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                fontWeight: '700',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease'
+              }}
+              onMouseEnter={e => e.currentTarget.style.backgroundColor = '#005fa3'}
+              onMouseLeave={e => e.currentTarget.style.backgroundColor = '#007acc'}
+            >
+              Checkout
+            </button>
+          </>
+        )}
+        {showPopup && (
+          <div style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
+            top: 0, left: 0, right: 0, bottom: 0,
             backgroundColor: 'rgba(0,0,0,0.5)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            zIndex: 1000,
-          }}
-        >
-          <div
-            className="popup-content card"
-            style={{
+            zIndex: 1000
+          }}>
+            <div style={{
               backgroundColor: '#fff',
               padding: '2rem',
               borderRadius: '12px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
               maxWidth: '400px',
               width: '90%',
-              textAlign: 'center',
-              position: 'relative',
-            }}
-          >
-            <h2 style={{ marginBottom: '1rem', color: '#388e3c' }}>Order Confirmed!</h2>
-            <p style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>{orderMessage}</p>
-            <p style={{ fontWeight: '700', fontSize: '1.1rem' }}>Total Paid: {formatPrice(orderTotal)}</p>
-            <button
-              onClick={closePopup}
-              style={{
-                marginTop: '1.5rem',
-                backgroundColor: '#2874f0',
-                color: '#fff',
-                border: 'none',
-                padding: '0.75rem 1.5rem',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontWeight: '700',
-                fontSize: '1rem',
-                transition: 'background-color 0.3s ease',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#1a5bb8')}
-              onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#2874f0')}
-            >
-              Close
-            </button>
+              textAlign: 'center'
+            }}>
+              <h2 style={{ color: '#007acc', marginBottom: '1rem' }}>Order Confirmed!</h2>
+              <p>{orderMessage}</p>
+              <p style={{ fontWeight: '600' }}>Total Paid: {formatPrice(orderTotal)}</p>
+              <button
+                onClick={closePopup}
+                style={{
+                  marginTop: '1rem',
+                  backgroundColor: '#007acc',
+                  color: '#fff',
+                  border: 'none',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '8px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease'
+                }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#005fa3'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#007acc'}
+              >
+                Close
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

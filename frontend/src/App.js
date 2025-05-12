@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Cart from './pages/Cart';
 import AdminPanel from './pages/AdminPanel';
+import AdminUsers from './pages/AdminUsers';
 import Orders from './pages/Orders';
 import { CartProvider } from './context/CartContext';
 import { RealTimeProvider } from './context/RealTimeContext';
@@ -29,9 +30,12 @@ const AppContent = () => {
     setSearchTerm(term.toLowerCase());
   };
 
-  // Do not show Navbar on login and register pages
-  const hideNavbarPaths = ['/', '/login', '/register'];
+  // Do not show Navbar on login, register, and admin pages
+  const hideNavbarPaths = ['/', '/login', '/register', '/admin', '/admin-users'];
   const showNavbar = !hideNavbarPaths.includes(location.pathname);
+
+  // Admin authentication check
+  const isAdminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
 
   return (
     <>
@@ -44,7 +48,18 @@ const AppContent = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<Orders userEmail={userEmail} />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route
+          path="/admin"
+          element={
+            isAdminLoggedIn ? <AdminPanel /> : <Navigate to="/" replace />
+          }
+        />
+        <Route
+          path="/admin-users"
+          element={
+            isAdminLoggedIn ? <AdminUsers /> : <Navigate to="/" replace />
+          }
+        />
       </Routes>
     </>
   );
