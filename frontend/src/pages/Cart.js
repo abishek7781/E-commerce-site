@@ -89,7 +89,7 @@ const Cart = () => {
       }}>
         <h1 style={{ color: '#007acc', marginBottom: '1.5rem' }}>Your Cart</h1>
         <p>Your cart is empty.</p>
-        <Link to="/" style={{ color: '#007acc', fontWeight: '600' }}>Go to Home Page</Link>
+        <Link to="/home" style={{ color: '#007acc', fontWeight: '600' }}>Go to Home Page</Link>
       </div>
     );
   }

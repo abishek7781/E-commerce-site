@@ -143,10 +143,8 @@ const About = () => {
   };
 
   const profileIcons = [
-    { id: 1, src: 'https://img.freepik.com/premium-vector/symbol-male-user-icon-circle-profile-icon-vector-illustration_276184-154.jpg', alt: 'Profile 1', name: 'Dinesh' },
-    { id: 2, src: 'https://img.freepik.com/premium-vector/symbol-male-user-icon-circle-profile-icon-vector-illustration_276184-154.jpg', alt: 'Profile 2', name: 'Ajith' },
-    { id: 3, src: 'https://img.freepik.com/premium-vector/symbol-male-user-icon-circle-profile-icon-vector-illustration_276184-154.jpg', alt: 'Profile 3', name: 'Naresh' },
-    { id: 4, src: 'https://img.freepik.com/premium-vector/symbol-male-user-icon-circle-profile-icon-vector-illustration_276184-154.jpg', alt: 'Profile 4', name: 'Sathish' },
+    { id: 1, src: 'https://img.freepik.com/premium-vector/symbol-male-user-icon-circle-profile-icon-vector-illustration_276184-154.jpg', alt: 'Profile 1', name: 'Abishek' },
+
   ];
 
   return (
@@ -154,7 +152,7 @@ const About = () => {
       <h1 style={styles.title}>About Our Platform</h1>
       <p style={styles.text}>
         Welcome to our cutting-edge e-commerce platform built with React and Flask. 
-        We combine modern technology with user-centric design to deliver an exceptional 
+        I combine modern technology with user-centric design to deliver an exceptional 
         shopping experience that prioritizes speed, security, and satisfaction.
       </p>
 
@@ -198,7 +196,7 @@ const About = () => {
                 <h3 style={styles.profileName}>{icon.name}</h3>
                 <p style={{ color: '#6c757d', margin: '0.5rem 0' }}>Full Stack Developer</p>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                  <button style={{ 
+                  <button onClick={() => window.location.href = "https://abishek7781.github.io/idlespy/"}  style={{ 
                     padding: '0.5rem 1rem',
                     borderRadius: '6px',
                     border: '1px solid #e0e0e0',
