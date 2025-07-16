@@ -106,7 +106,7 @@ const Navbar = ({ onSearch }) => {
         </button>
         <button
           onClick={handleLogout}
-          style={{ marginLeft: 'auto', padding: '6px 12px', cursor: 'pointer' }}
+          style={{ marginLeft: 'auto', padding: '6px 12px', cursor: 'pointer', color:'white', backgroundColor:'red' }}
           aria-label="Logout"
           className="logout-button"
         >
